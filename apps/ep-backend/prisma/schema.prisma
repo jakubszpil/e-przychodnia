@@ -23,7 +23,7 @@ model User {
   profile Profile?
 
   facility     Facility?     @relation(fields: [facilityId], references: [id])
-  facilityId   String?
+  facilityId   String?       @map("facility_id")
   appointments Appointment[]
   recipes      Recipe[]
 
@@ -53,7 +53,7 @@ model Facility {
   name       String @unique
   address    String
   city       String
-  postalCode String
+  postalCode String @map("postal_code")
   latitute   Float
   longitute  Float
   users      User[]
@@ -65,7 +65,7 @@ model Appointment {
   id          String   @id @unique @default(cuid())
   name        String   @unique
   description String
-  issueDate   DateTime
+  date        DateTime
   users       User[]
 
   @@map("appointments")
@@ -75,8 +75,8 @@ model Recipe {
   id           String   @id @unique @default(cuid())
   name         String
   description  String
-  prescribedAt DateTime
-  expiresAt    DateTime
+  prescribedAt DateTime @default(now()) @map("prescribed_at")
+  expiresAt    DateTime @map("expires_at")
   users        User[]
 
   @@map("recipes")
