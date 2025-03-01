@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @unique @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  role    Role
+  profile Profile?
+
+  facility     Facility?     @relation(fields: [facilityId], references: [id])
+  facilityId   String?
+  appointments Appointment[]
+  recipes      Recipe[]
+
+  @@map("users")
+}
+
+enum Role {
+  Patient @map("PATIENT")
+  Doctor  @map("DOCTOR")
+  Admin   @map("ADMIN")
+}
+
+model Profile {
+  id          String @id @unique @default(cuid())
+  userId      String @unique @map("user_id")
+  user        User   @relation(fields: [userId], references: [id])
+  fullName    String @map("full_name")
+  firstName   String @map("first_name")
+  lastName    String @map("last_name")
+  phoneNumber String @map("phone_number")
+
+  @@map("profiles")
+}
+
+model Facility {
+  id         String @id @unique @default(cuid())
+  name       String @unique
+  address    String
+  city       String
+  postalCode String
+  latitute   Float
+  longitute  Float
+  users      User[]
+
+  @@map("facilities")
+}
+
+model Appointment {
+  id          String   @id @unique @default(cuid())
+  name        String   @unique
+  description String
+  issueDate   DateTime
+  users       User[]
+
+  @@map("appointments")
+}
+
+model Recipe {
+  id           String   @id @unique @default(cuid())
+  name         String
+  description  String
+  prescribedAt DateTime
+  expiresAt    DateTime
+  users        User[]
+
+  @@map("recipes")
+}

@@ -38,6 +38,25 @@
       "options": {
         "passWithNoTests": true
       }
+    },
+    "prisma": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/ep-backend"
+      },
+      "defaultConfiguration": "generate",
+      "configurations": {
+        "init": {
+          "command": "prisma init"
+        },
+        "generate": {
+          "command": "prisma generate"
+        },
+        "migrate": {
+          "command": "prisma migrate dev",
+          "args": ["--name=init"]
+        }
+      }
     }
   }
 }
