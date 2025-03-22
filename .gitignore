@@ -42,3 +42,7 @@ Thumbs.db
 .nx/workspace-data
 
 .angular
+
+# Keep environment variables out of version control
+.env
+
