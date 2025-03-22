@@ -35,8 +35,33 @@
       }
     },
     "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
+        "jestConfig": "apps/ep-backend/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "prisma": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/ep-backend"
+      },
+      "defaultConfiguration": "generate",
+      "configurations": {
+        "init": {
+          "command": "prisma init"
+        },
+        "generate": {
+          "command": "prisma generate"
+        },
+        "migrate": {
+          "command": "prisma migrate dev",
+          "args": ["--name=init"]
+        },
+        "studio": {
+          "command": "prisma studio"
+        }
       }
     }
   }
