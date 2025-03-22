@@ -37,6 +37,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
+      "dependsOn": ["prisma"],
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/ep-backend/jest.config.ts",
